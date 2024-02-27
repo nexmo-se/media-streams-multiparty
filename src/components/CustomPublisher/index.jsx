@@ -45,7 +45,7 @@ function CustomPublisher({ mediaStream }) {
     <div className="block overflow-hidden">
       <PushPinIcon></PushPinIcon>
 
-      <video ref={videoRef} autoPlay playsInline muted></video>
+      <video width="100%" ref={videoRef} autoPlay playsInline muted></video>
     </div>
   );
 }

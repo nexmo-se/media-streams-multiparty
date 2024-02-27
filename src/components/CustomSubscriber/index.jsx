@@ -36,7 +36,7 @@ function CustomSubscriber({ mediaStream, element }) {
       {/* <div className="absolute z-20"> */}
       {/* <PushPinIcon sx={{ position: 'absolute' }} /> */}
 
-      <video ref={videoRef} autoPlay playsInline muted></video>
+      <video width="100%" ref={videoRef} autoPlay playsInline muted></video>
     </div>
   );
 }

@@ -37,7 +37,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Room() {
   const { roomName } = useParams();
-  const { processor, connector } = useMediaProcessor();
+  // const { processor, connector } = useMediaProcessor();
   // const [layoutManager, setLayoutManager] = useState(useLayoutManager());
   const { user } = useContext(UserContext);
   const wrapRef = useRef(null);
@@ -63,29 +63,29 @@ function Room() {
     mSession.session.disconnect();
   };
 
-  useEffect(() => {
-    console.log('use effect run -toggle noise suppresion');
-    console.log(isNoiseSuppressionEnabled);
-    // if (OT.hasMediaProcessorSupport()) {
-    if (mPublisher.publisher) {
-      if (isNoiseSuppressionEnabled) {
-        console.log(mPublisher.publisher);
-        mPublisher.publisher
-          .setAudioMediaProcessorConnector(connector)
-          .catch(console.log)
-          .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
-      } else {
-        console.log('turning off NS');
-        mPublisher.publisher
-          .setAudioMediaProcessorConnector(null)
-          .catch(console.log)
-          .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
-      }
-    } else {
-      console.log('dping nothing');
-      console.log(mPublisher);
-    }
-  }, [mPublisher.isPublishing, isNoiseSuppressionEnabled, mPublisher.publisher]);
+  // useEffect(() => {
+  //   console.log('use effect run -toggle noise suppresion');
+  //   console.log(isNoiseSuppressionEnabled);
+  //   // if (OT.hasMediaProcessorSupport()) {
+  //   if (mPublisher.publisher) {
+  //     if (isNoiseSuppressionEnabled) {
+  //       console.log(mPublisher.publisher);
+  //       mPublisher.publisher
+  //         .setAudioMediaProcessorConnector(connector)
+  //         .catch(console.log)
+  //         .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
+  //     } else {
+  //       console.log('turning off NS');
+  //       mPublisher.publisher
+  //         .setAudioMediaProcessorConnector(null)
+  //         .catch(console.log)
+  //         .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
+  //     }
+  //   } else {
+  //     console.log('dping nothing');
+  //     console.log(mPublisher);
+  //   }
+  // }, [mPublisher.isPublishing, isNoiseSuppressionEnabled, mPublisher.publisher]);
 
   useEffect(() => {
     const container = document.getElementById('wrapper');
@@ -178,9 +178,9 @@ function Room() {
         <MuteAudioButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteAudioButton>
         <MuteVideoButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteVideoButton>
 
-        {OT.hasMediaProcessorSupport() && (
+        {/* {OT.hasMediaProcessorSupport() && (
           <NoiseButton handleNoiseChange={handleNoiseChange} isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}></NoiseButton>
-        )}
+        )} */}
         {!isMobile() && <ScreenSharingButton layout={mPublisher.callLayout}></ScreenSharingButton>}
         {OT.hasMediaProcessorSupport() && !isMobile() && <BlurButton publisher={mPublisher.publisher}></BlurButton>}
         {/* {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />} */}
