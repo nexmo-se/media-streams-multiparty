@@ -6,8 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const envPath = path.join(__dirname, '..');
 dotenv.config({ path: `${__dirname}/.env.local` });
-const apiKey = process.env.apiKey;
-const apiSecret = process.env.apiSecret;
+const apiKey = '1222';
+const apiSecret = '2333';
 
 // dotenv.config({ path: `/Users/jmolinasanz/Desktop/projects/my-vveapp/server/.env.local` });
 if (!apiKey || !apiSecret) {

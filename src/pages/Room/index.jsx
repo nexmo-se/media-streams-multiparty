@@ -43,7 +43,7 @@ function Room() {
   const wrapRef = useRef(null);
   const resizeTimerRef = useRef();
   const mPublisher = usePublisher('video-container');
-  const mSubscriber = useSubscriber();
+  // const mSubscriber = useSubscriber();
   const [isNoiseSuppressionEnabled, setNoiseSuppression] = useState(false);
   const mSession = useContext(SessionContext);
   const [chatOpen, setChatOpen] = useState(false);
@@ -150,7 +150,9 @@ function Room() {
         <div id="video-container" className="flex column w-full h-full">
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
           {mSession.videoSources.length > 0 &&
-            mSession.videoSources.map((mediaStream) => <CustomSubscriber mediaStream={mediaStream}></CustomSubscriber>)}
+            mSession.videoSources.map((mediaStream, index) => (
+              <CustomSubscriber key={mediaStream} mediaStream={mediaStream} element={mSession.subscriberElements[index]}></CustomSubscriber>
+            ))}
           {/* {mSession.session &&
             mSession.streams.length > 0 &&
             mSession.streams.map((stream) => (
@@ -181,7 +183,7 @@ function Room() {
         )}
         {!isMobile() && <ScreenSharingButton layout={mPublisher.callLayout}></ScreenSharingButton>}
         {OT.hasMediaProcessorSupport() && !isMobile() && <BlurButton publisher={mPublisher.publisher}></BlurButton>}
-        {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />}
+        {/* {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />} */}
         {/* <CaptionsSettings handleClick={() => setCaptionsEnabled((prev) => !prev)} /> */}
         {!isMobile() && <ChatSettings handleClick={() => setChatOpen((prev) => !prev)} />}
         <ExitButton handleLeave={handleLeave}></ExitButton>

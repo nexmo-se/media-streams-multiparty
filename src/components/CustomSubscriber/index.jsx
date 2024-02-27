@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import PushPinIcon from '@mui/icons-material/PushPin';
 
-function CustomSubscriber({ mediaStream }) {
+function CustomSubscriber({ mediaStream, element }) {
   const videoRef = useRef(null);
+  console.log(element);
   const mediaStreamRef = useRef(null);
   useEffect(() => {
     if (mediaStream && videoRef.current) {
@@ -13,25 +14,28 @@ function CustomSubscriber({ mediaStream }) {
 
       const handleStreamChange = () => {
         console.log('stream changed');
-        if (mediaStream !== mediaStreamRef.current) {
-          const newAudioTrack = mediaStream.getAudioTracks()[0];
-          const newVideoTrack = mediaStream.getVideoTracks()[0];
+        if (mediaStream !== videoRef.current.srcObject) {
+          const newAudioTrack = element.srcObject.getAudioTracks()[0];
+          const newVideoTrack = element.srcObject.getVideoTracks()[0];
           videoRef.current.srcObject = new MediaStream([newAudioTrack, newVideoTrack]);
-          mediaStreamRef.current = mediaStream;
+          console.log(new MediaStream([newAudioTrack, newVideoTrack]));
+          mediaStreamRef.current = element.srcObject;
         }
       };
 
-      videoRef.current.addEventListener('play', handleStreamChange);
+      element.addEventListener('play', handleStreamChange);
 
       return () => {
-        videoRef.current.removeEventListener('play', handleStreamChange);
+        element.removeEventListener('play', handleStreamChange);
       };
     }
-  }, [mediaStream]);
+  }, [mediaStream, element]);
 
   return (
     <div className="block overflow-hidden">
-      <PushPinIcon />
+      {/* <div className="absolute z-20"> */}
+      {/* <PushPinIcon sx={{ position: 'absolute' }} /> */}
+
       <video ref={videoRef} autoPlay playsInline muted></video>
     </div>
   );
