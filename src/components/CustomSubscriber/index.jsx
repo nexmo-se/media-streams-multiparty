@@ -1,25 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import PushPinIcon from '@mui/icons-material/PushPin';
 
-function CustomSubscriber({ mediaStream, element }) {
+function CustomSubscriber({ element }) {
   const videoRef = useRef(null);
   console.log(element);
-  const mediaStreamRef = useRef(null);
+
   useEffect(() => {
+    const mediaStream = element.srcObject;
     if (mediaStream && videoRef.current) {
-      const videoTrack = mediaStream.getVideoTracks()[0];
-      const audioTrack = mediaStream.getAudioTracks()[0];
-      mediaStreamRef.current = mediaStream;
-      videoRef.current.srcObject = new MediaStream([videoTrack, audioTrack]);
+      // const videoTrack = mediaStream.getVideoTracks()[0];
+      // const audioTrack = mediaStream.getAudioTracks()[0];
+
+      videoRef.current.srcObject = mediaStream;
 
       const handleStreamChange = () => {
         console.log('stream changed');
-        if (mediaStream !== videoRef.current.srcObject) {
-          const newAudioTrack = element.srcObject.getAudioTracks()[0];
-          const newVideoTrack = element.srcObject.getVideoTracks()[0];
-          videoRef.current.srcObject = new MediaStream([newAudioTrack, newVideoTrack]);
-          console.log(new MediaStream([newAudioTrack, newVideoTrack]));
-          mediaStreamRef.current = element.srcObject;
+        if (mediaStream !== element.srcObject) {
+          console.log('inside stream changer');
+          videoRef.current.srcObject = element.srcObject;
         }
       };
 
@@ -29,14 +27,14 @@ function CustomSubscriber({ mediaStream, element }) {
         element.removeEventListener('play', handleStreamChange);
       };
     }
-  }, [mediaStream, element]);
+  }, [element]);
 
   return (
-    <div className="block overflow-hidden">
+    <div className="">
       {/* <div className="absolute z-20"> */}
       {/* <PushPinIcon sx={{ position: 'absolute' }} /> */}
 
-      <video width="100%" ref={videoRef} autoPlay playsInline muted></video>
+      <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>
     </div>
   );
 }

@@ -15,7 +15,7 @@ function usePublisher(containerId, displayName = false) {
     insertMode: 'append',
     width: '100%',
     height: '100%',
-    insertDefaultUI: false,
+
     // fitMode: 'contain',
   };
   const stats = useStatsContext();
@@ -117,7 +117,7 @@ function usePublisher(containerId, displayName = false) {
     const finalPublisherOptions = Object.assign({}, DFT_PUBLISHER_OPTIONS, publisherOptions);
     // console.log(finalPublisherOptions)
 
-    const publ = OT.initPublisher(null, finalPublisherOptions, (err) => {
+    const publ = OT.initPublisher(container, finalPublisherOptions, (err) => {
       if (err) {
         publisher.current = null;
         if (err.name === 'OT_USER_MEDIA_ACCESS_DENIED') return;

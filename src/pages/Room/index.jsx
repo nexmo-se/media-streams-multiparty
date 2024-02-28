@@ -150,9 +150,7 @@ function Room() {
         <div id="video-container" className="flex column w-full h-full">
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
           {mSession.videoSources.length > 0 &&
-            mSession.videoSources.map((mediaStream, index) => (
-              <CustomSubscriber key={mediaStream} mediaStream={mediaStream} element={mSession.subscriberElements[index]}></CustomSubscriber>
-            ))}
+            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={element} element={element}></CustomSubscriber>)}
           {/* {mSession.session &&
             mSession.streams.length > 0 &&
             mSession.streams.map((stream) => (
