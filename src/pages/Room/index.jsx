@@ -151,16 +151,6 @@ function Room() {
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
           {mSession.videoSources.length > 0 &&
             mSession.subscriberElements.map((element, index) => <CustomSubscriber key={element} element={element}></CustomSubscriber>)}
-          {/* {mSession.session &&
-            mSession.streams.length > 0 &&
-            mSession.streams.map((stream) => (
-              <RemoteSubscriber key={stream.streamId} stream={stream} session={mSession.session}></RemoteSubscriber>
-            ))} */}
-          {/* <img
-            className="w-1/2"
-            src="https://www.airswift.com/hubfs/Imported_Blog_Media/woman-using-video-call-etiquette-1.jpg#keepProtocol"
-          />
-           */}
         </div>
       </Grid>
       {chatOpen && <Chat></Chat>}

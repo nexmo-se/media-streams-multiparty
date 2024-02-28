@@ -130,6 +130,7 @@ function SessionProvider({ children }) {
 
   function handleStreamDestroyed(e) {
     setStreams((prevStreams) => [...prevStreams].filter((stream) => stream.id !== e.stream.id));
+    setSubscriberElements((prevStreams) => [...prevStreams].filter((stream) => stream.id !== e.stream.id));
     session.current.getSubscribersForStream(e.stream).forEach((subscriber) => {
       removeSubscribers({ subscriber });
     });
@@ -183,6 +184,8 @@ function SessionProvider({ children }) {
       subscriber.on('videoElementCreated', function (event) {
         const stream = subscriber._.webRtcStream();
         const element = event.element;
+        console.log(event.target);
+        element.setAttribute('id', event.target.streamId);
         setSubscriberElements((prevStreams) => [...prevStreams, element]);
         setVideoSources((prevStreams) => [...prevStreams, stream]);
       });

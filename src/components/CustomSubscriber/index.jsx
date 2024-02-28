@@ -8,11 +8,8 @@ function CustomSubscriber({ element }) {
   useEffect(() => {
     const mediaStream = element.srcObject;
     if (mediaStream && videoRef.current) {
-      // const videoTrack = mediaStream.getVideoTracks()[0];
-      // const audioTrack = mediaStream.getAudioTracks()[0];
-
       videoRef.current.srcObject = mediaStream;
-
+      videoRef.current.setAttribute('id', element.id);
       const handleStreamChange = () => {
         console.log('stream changed');
         if (mediaStream !== element.srcObject) {

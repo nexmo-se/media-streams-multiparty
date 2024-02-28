@@ -5,37 +5,8 @@ function CustomPublisher({ mediaStream }) {
   //   let streamRef = null;
   useEffect(() => {
     if (mediaStream) {
-      //   videoRef.current = elem;
-
       console.log(mediaStream);
-      // const stream = sub._.webRtcStream();
-      // videoRef.current.srcObject = elem.srcObject;
       videoRef.current.srcObject = mediaStream;
-
-      //   const originalAddTrack = mediaStream.addTrack.bind(mediaStream);
-      //   const originalRemoveTrack = mediaStream.removeTrack.bind(mediaStream);
-      //   mediaStream.addTrack = (newTrack) => {
-      //     console.log(newTrack);
-      //     originalAddTrack(newTrack);
-      //     videoRef.current.srcObject.addTrack(newTrack);
-      //     // update your local stream
-      //   };
-      //   mediaStream.removeTrack = (oldTrack) => {
-      //     originalRemoveTrack(oldTrack);
-      //     videoRef.current.srcObject.removeTrack(oldTrack);
-      //     // update your local stream
-      //   };
-
-      // videoRef.current.onplay = () => {
-      //   console.log('stream changed');
-      //   if (streamRef !== videoRef.current.srcObject) {
-      //     // Update stream with the new value
-      //     const newAudioTrack = streamRef.getAudioTracks()[0];
-      //     const newVideoTrack = streamRef.getVideoTracks()[0];
-      //     streamRef = videoRef.current.srcObject;
-      //     videoRef.current.srcObject = new MediaStream([newAudioTrack, newVideoTrack]);
-      //   }
-      // };
     }
   }, [mediaStream]);
   return (
