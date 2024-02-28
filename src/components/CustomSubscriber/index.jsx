@@ -26,14 +26,7 @@ function CustomSubscriber({ element }) {
     }
   }, [element]);
 
-  return (
-    <div className="">
-      {/* <div className="absolute z-20"> */}
-      {/* <PushPinIcon sx={{ position: 'absolute' }} /> */}
-
-      <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>
-    </div>
-  );
+  return <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>;
 }
 
 export default CustomSubscriber;

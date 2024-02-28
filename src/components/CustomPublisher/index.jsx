@@ -9,12 +9,7 @@ function CustomPublisher({ mediaStream }) {
       videoRef.current.srcObject = mediaStream;
     }
   }, [mediaStream]);
-  return (
-    // <video height={'100%'} width={'100%'} ref={videoRef} autoPlay playsInline muted></video>
-    <div>
-      <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>
-    </div>
-  );
+  return <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>;
 }
 
 export default CustomPublisher;
