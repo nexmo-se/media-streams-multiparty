@@ -12,7 +12,7 @@ function CustomSubscriber({ element }) {
       videoRef.current.setAttribute('id', element.id);
       const handleStreamChange = () => {
         console.log('stream changed');
-        if (mediaStream !== element.srcObject) {
+        if (mediaStream !== videoRef.current.srcObject) {
           console.log('inside stream changer');
           videoRef.current.srcObject = element.srcObject;
         }
