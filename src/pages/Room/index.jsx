@@ -6,7 +6,6 @@ import { styled } from '@mui/material/styles';
 import VideoSettings from '../../components/VideoSettings';
 import AudioSettings from '../../components/AudioSettings';
 import ChatSettings from '../../components/ChatSettings';
-import CaptionsSettings from '../../components/CaptionsSettings';
 import { SessionContext } from '../../Context/session';
 import usePublisher from '../../hooks/publisher';
 import useSubscriber from '../../hooks/subscriber';
@@ -14,17 +13,12 @@ import { isMobile } from '../../util';
 import { UserContext } from '../../Context/user';
 import MuteVideoButton from '../../components/MuteVideoButton';
 import MuteAudioButton from '../../components/MuteAudioButton';
-import MoreButton from '../../components/MoreButton';
-import ScreenSharingButton from '../../components/ScreenSharingButton';
 import ConnectionAlert from '../../components/ConnectionAlert';
 import Chat from '../../components/Chat';
 import BlurButton from '../../components/BlurButton';
-import NoiseButton from '../../components/NoiseButton';
 import ExitButton from '../../components/ExitButton';
-import RemoteSubscriber from '../../components/RemoteSubscriber';
 import CustomSubscriber from '../../components/CustomSubscriber';
 import CustomPublisher from '../../components/CustomPublisher';
-import { useMediaProcessor } from '../../hooks/mediaProcessor';
 import { useParams } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -44,19 +38,12 @@ function Room() {
   const resizeTimerRef = useRef();
   const mPublisher = usePublisher('video-container');
   // const mSubscriber = useSubscriber();
-  const [isNoiseSuppressionEnabled, setNoiseSuppression] = useState(false);
   const mSession = useContext(SessionContext);
   const [chatOpen, setChatOpen] = useState(false);
-  const [captionsEnabled, setCaptionsEnabled] = useState(false);
 
   useEffect(() => {
     mSession.joinRoom(roomName, 'jose');
   }, []);
-
-  const handleNoiseChange = () => {
-    console.log('toggling noise');
-    setNoiseSuppression((prev) => !prev);
-  };
 
   const handleLeave = () => {
     if (!mSession) return;
@@ -146,7 +133,7 @@ function Room() {
 
   return (
     <Grid className="w-screen" container spacing={1}>
-      <Grid ref={wrapRef} id="wrapper" height={captionsEnabled ? '80vh' : '90vh'} item xs={chatOpen ? 9 : 12}>
+      <Grid ref={wrapRef} id="wrapper" height={'90vh'} item xs={chatOpen ? 9 : 12}>
         <div id="video-container" className="flex column w-full h-full">
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
           {mSession.videoSources.length > 0 &&
@@ -154,25 +141,12 @@ function Room() {
         </div>
       </Grid>
       {chatOpen && <Chat></Chat>}
-      {captionsEnabled && (
-        <Grid height={'10vh p-2'} item xs={8}>
-          <div className="flex row justify-center">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum voluptatibus voluptas totam sapiente vero dolorem eos,
-            dignissimos ut labore laboriosam sint, odio earum enim praesentium amet minus laborum magnam ullam?
-          </div>
-        </Grid>
-      )}
+
       <div className="flex justify-center flex-end items-center absolute h-[90px] radius-[25px] w-full bottom-[0px] left-[0px] bg-black rounded-t-3xl">
         <MuteAudioButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteAudioButton>
         <MuteVideoButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteVideoButton>
 
-        {/* {OT.hasMediaProcessorSupport() && (
-          <NoiseButton handleNoiseChange={handleNoiseChange} isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}></NoiseButton>
-        )} */}
-        {!isMobile() && <ScreenSharingButton layout={mPublisher.callLayout}></ScreenSharingButton>}
         {OT.hasMediaProcessorSupport() && !isMobile() && <BlurButton publisher={mPublisher.publisher}></BlurButton>}
-        {/* {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />} */}
-        {/* <CaptionsSettings handleClick={() => setCaptionsEnabled((prev) => !prev)} /> */}
         {!isMobile() && <ChatSettings handleClick={() => setChatOpen((prev) => !prev)} />}
         <ExitButton handleLeave={handleLeave}></ExitButton>
       </div>
