@@ -136,10 +136,18 @@ function Room() {
       <Grid ref={wrapRef} id="wrapper" height={'90vh'} item xs={chatOpen ? 9 : 12}>
         <div id="video-container" className="flex column w-full h-full">
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
-          {mSession.videoSources.length > 0 &&
-            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={element} element={element}></CustomSubscriber>)}
-          {/* {mSession.subscriberElements.length > 0 &&
-            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} element={element}></CustomSubscriber>)} */}
+          {mSession.subscriberElements.length > 0 &&
+            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} element={element}></CustomSubscriber>)}
+          {/* {mSession.session &&
+              mSession.streams.length > 0 &&
+              mSession.streams.map((stream) => (
+                <RemoteSubscriber key={stream.streamId} stream={stream} session={mSession.session}></RemoteSubscriber>
+              ))} */}
+          {/* <img
+              className="w-1/2"
+              src="https://www.airswift.com/hubfs/Imported_Blog_Media/woman-using-video-call-etiquette-1.jpg#keepProtocol"
+            />
+             */}
         </div>
       </Grid>
       {chatOpen && <Chat></Chat>}
@@ -148,7 +156,13 @@ function Room() {
         <MuteAudioButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteAudioButton>
         <MuteVideoButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteVideoButton>
 
+        {/* {OT.hasMediaProcessorSupport() && (
+            <NoiseButton handleNoiseChange={handleNoiseChange} isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}></NoiseButton>
+          )} */}
+
         {OT.hasMediaProcessorSupport() && !isMobile() && <BlurButton publisher={mPublisher.publisher}></BlurButton>}
+        {/* {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />} */}
+        {/* <CaptionsSettings handleClick={() => setCaptionsEnabled((prev) => !prev)} /> */}
         {!isMobile() && <ChatSettings handleClick={() => setChatOpen((prev) => !prev)} />}
         <ExitButton handleLeave={handleLeave}></ExitButton>
       </div>

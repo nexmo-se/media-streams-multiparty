@@ -4,9 +4,8 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 function CustomSubscriber({ element }) {
   const videoRef = useRef(null);
   console.log(element);
-
+  const mediaStream = element.srcObject;
   useEffect(() => {
-    const mediaStream = element.srcObject;
     if (mediaStream && videoRef.current) {
       videoRef.current.srcObject = mediaStream;
       videoRef.current.setAttribute('id', element.id);
@@ -24,7 +23,7 @@ function CustomSubscriber({ element }) {
         element.removeEventListener('play', handleStreamChange);
       };
     }
-  }, [element]);
+  }, [element, mediaStream]);
 
   return <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>;
 }
