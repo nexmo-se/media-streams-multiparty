@@ -136,8 +136,10 @@ function Room() {
       <Grid ref={wrapRef} id="wrapper" height={'90vh'} item xs={chatOpen ? 9 : 12}>
         <div id="video-container" className="flex column w-full h-full">
           {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
-          {mSession.subscriberElements.length > 0 &&
-            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} element={element}></CustomSubscriber>)}
+          {mSession.videoSources.length > 0 &&
+            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={element} element={element}></CustomSubscriber>)}
+          {/* {mSession.subscriberElements.length > 0 &&
+            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} element={element}></CustomSubscriber>)} */}
         </div>
       </Grid>
       {chatOpen && <Chat></Chat>}
