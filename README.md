@@ -4,7 +4,7 @@ This is a sample app that demonstrates how to use the Vonage Video API for users
 
 This approach requires that you [disable the default UI](https://tokbox.com/developer/guides/customize-ui/js/#video-element) on the publisher and subscriber side and listen to the `videoElementCreated`. Upon receiving these events, you can then feed your own video element with the `mediaStream` coming from the video element dispatched on the `videoElementCreated` event.
 
-Note: On the subscriber side, a [further consideration[https://api.support.vonage.com/hc/en-us/articles/10901330247964-How-to-update-subscriber-stream-when-manipulating-video-element] needs to be taken into account as the mediaStream can change as part of [Adaptive Media Routing](https://tokbox.com/developer/guides/create-session/). This application already handles that scenario. See the `CustomSubscriber` component.
+Note: On the subscriber side, a further consideration[https://api.support.vonage.com/hc/en-us/articles/10901330247964-How-to-update-subscriber-stream-when-manipulating-video-element] needs to be taken into account as the mediaStream can change as part of [Adaptive Media Routing](https://tokbox.com/developer/guides/create-session/). This application already handles that scenario. See the `CustomSubscriber` component.
 
 ## Running the app
 
