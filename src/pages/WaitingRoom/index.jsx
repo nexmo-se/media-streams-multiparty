@@ -105,7 +105,8 @@ function WaitingRoom() {
       localAudio !== user.defaultSettings.publishAudio ||
       localVideo !== user.defaultSettings.publishVideo ||
       localAudioSource !== user.defaultSettings.audioSource ||
-      localVideoSource !== user.defaultSettings.videoSource
+      localVideoSource !== user.defaultSettings.videoSource ||
+      blur !== user.defaultSettings.blur
     ) {
       console.log('audio source' + localAudioSource);
       console.log('video source' + localVideoSource);
