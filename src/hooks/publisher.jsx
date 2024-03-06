@@ -6,7 +6,7 @@ import OT from '@opentok/client';
 import { SessionContext } from '../Context/session';
 import { getInitials } from '../util';
 import { UserContext } from '../Context/user';
-import { useStatsContext } from '../Context/stats';
+
 // import { useLayoutManager } from '../Context/layout';
 
 function usePublisher(containerId, displayName = false) {
@@ -18,7 +18,7 @@ function usePublisher(containerId, displayName = false) {
 
     // fitMode: 'contain',
   };
-  const stats = useStatsContext();
+
   const { user } = useContext(UserContext);
   const [pubStream, setPubStream] = useState(null);
   //   const OTStats = useRef(null);
@@ -36,22 +36,21 @@ function usePublisher(containerId, displayName = false) {
     publisher.current = null;
   }
 
-  function onPublisherStatsAvailable(id, video, audio, rtcStats) {
-    // console.log(rtcStats);
-    setStats({ ...video, ...rtcStats, ...audio });
+  // function handleStreamCreated(e) {
+  //   console.log(e.target.id);
+  //   const stream = publisher.current._.webRtcStream();
+  //   console.log(stream);
+  //   setPubStream(stream);
+  //   console.log('started publishing');
+  //   setIsPublishing(true);
+  //   // insertWifiIcon(e.target.id, e.target.element);
+  //   setStream(e.stream);
+  // }
 
-    // document.getElementById(id+"lbl").innerHTML = video.width+"x"+video.height+"@"+video.frameRate+"fps<br/>VBW:"+video.bandwidth+"Kbps PL:"+video.packetLoss+"%<br/>ABW:"+audio.bandwidth+"Kbps PL:"+audio.packetLoss+"%";
-  }
-
-  function handleStreamCreated(e) {
-    console.log(e.target.id);
-    const stream = publisher.current._.webRtcStream();
-    console.log(stream);
+  function handleVideoElementCreated({ element }) {
+    const stream = element.srcObject;
     setPubStream(stream);
-    console.log('started publishing');
     setIsPublishing(true);
-    // insertWifiIcon(e.target.id, e.target.element);
-    setStream(e.stream);
   }
 
   function handleStreamDestroyed(e) {
@@ -85,27 +84,14 @@ function usePublisher(containerId, displayName = false) {
   function handleVideoWarning() {
     setQuality('poor');
   }
+  function handleMediaStopped(e) {
+    console.log('media stopped');
+    e.preventDefault();
+    console.log(e);
+  }
 
   function handleVideoWarningLifted() {
     setQuality('good');
-  }
-
-  function insertWifiIcon(targetSubscriber, targetDom) {
-    if (document.getElementById(`${targetSubscriber.id}-mute`)) return;
-    const childNodeStr = `<div
-    id=${targetSubscriber.id}-mute
-    style="
-    position: absolute; 
-    top: 8px; 
-    right: 8px;
-    background: url('https://purepng.com/public/uploads/large/purepng.com-wifi-icon-greenwifi-iconwifiiconwireless-connection-170152843620015a2q.png');
-    background-position: center;
-    background-size: contain;
-    height: 28px;
-    width: 28px;
-    background-repeat: no-repeat;">
-    </div>`;
-    targetDom.insertAdjacentHTML('beforeend', childNodeStr);
   }
 
   const initPublisher = useCallback((container, publisherOptions) => {
@@ -148,11 +134,13 @@ function usePublisher(containerId, displayName = false) {
     }
 
     publisher.on('destroyed', handleDestroyed);
-    publisher.on('streamCreated', handleStreamCreated);
+    publisher.on('mediaStopped', handleMediaStopped);
+    // publisher.on('streamCreated', handleStreamCreated);
     publisher.on('streamDestroyed', handleStreamDestroyed);
     publisher.on('accessDenied', handleAccessDenied);
     publisher.on('videoDisabled', handleVideoDisabled);
     publisher.on('videoEnabled', handleVideoEnabled);
+    publisher.on('videoElementCreated', handleVideoElementCreated);
     publisher.on('videoDisableWarning', handleVideoWarning);
     publisher.on('videoDisableWarningLifted', handleVideoWarningLifted);
 
@@ -238,7 +226,7 @@ function usePublisher(containerId, displayName = false) {
     } catch (err) {
       console.log(err.stack);
     }
-  }, [publisher.current, stream, layoutManager, containerId]);
+  }, [publisher.current, pubStream, layoutManager, containerId]);
 
   return {
     isPublishing,
