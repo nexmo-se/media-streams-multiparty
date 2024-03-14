@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import OT from '@opentok/client';
 
+// console.log(OT)
 export default function useDevices() {
   const [deviceInfo, setDeviceInfo] = useState({
     audioInputDevices: [],

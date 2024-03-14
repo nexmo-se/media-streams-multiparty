@@ -3,12 +3,13 @@ import { useState, createContext, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import OT from '@opentok/client';
+
 import { getCredentials } from '../api/fetchCredentials';
 // import RoomAPI from 'api/room';
 // import CredentialAPI from 'api/credential';
 // import User from 'entities/user';
 const SINGAL_TYPE_CHAT = 'chat';
-import useSubscriber from '../hooks/subscriber';
+
 import LayoutManager from '../utils/layout-manager';
 import { UserContext } from './user';
 // import { useLayoutManager } from './layout';
@@ -36,8 +37,8 @@ function SessionProvider({ children }) {
   const credential = {
     apiKey: '46264952',
     token:
-      'T1==cGFydG5lcl9pZD00NjI2NDk1MiZzaWc9MDFiNmQyMjkwZjM3Y2VjMmM2Y2NkMTJmMmNkZGI2MDZlNzgzOTFiODpzZXNzaW9uX2lkPTFfTVg0ME5qSTJORGsxTW41LU1UY3dPVEV5T1RFeU56azBOWDVoYTFNeWVrc3ZkMDV2UTJSRFNXeHhjemhXTlNzMlVUbC1mbjQmY3JlYXRlX3RpbWU9MTcwOTEyOTE0NiZub25jZT0wLjg5MzAyNDc5MDEwNTU4Njgmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTcwOTczMzk0NSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
-    sessionId: '1_MX40NjI2NDk1Mn5-MTcwOTEyOTEyNzk0NX5ha1Myeksvd05vQ2RDSWxxczhWNSs2UTl-fn4',
+      'T1==cGFydG5lcl9pZD00NjI2NDk1MiZzaWc9ZjFlNDg3ZTBjNzFlN2E1MGMxMjY4ZWFjNTllZTc2OGM1MGE2ZjYyNzpzZXNzaW9uX2lkPTJfTVg0ME5qSTJORGsxTW41LU1UY3dPVGMwTWpjd016WXpPWDVMTDJaNFJuRkdla3AxVXpaU1l6aGFZa0pRZERWMmNpdC1mbjQmY3JlYXRlX3RpbWU9MTcxMDQxNzQ5MSZub25jZT0wLjYwNzcxNDY2MDQ1OTAyMTMmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTcxMTAyMjI5MSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
+    sessionId: '2_MX40NjI2NDk1Mn5-MTcwOTc0MjcwMzYzOX5LL2Z4RnFGekp1UzZSYzhaYkJQdDV2cit-fn4',
   };
 
   // useEffect(() => {
@@ -130,7 +131,7 @@ function SessionProvider({ children }) {
 
   function handleStreamDestroyed(e) {
     setStreams((prevStreams) => [...prevStreams].filter((stream) => stream.id !== e.stream.id));
-    setSubscriberElements((prevStreams) => [...prevStreams].filter((stream) => stream.id !== e.stream.id));
+    setSubscriberElements((prevStreams) => prevStreams.filter(({ element }) => element.id !== e.stream.id));
     session.current.getSubscribersForStream(e.stream).forEach((subscriber) => {
       removeSubscribers({ subscriber });
     });
@@ -182,11 +183,11 @@ function SessionProvider({ children }) {
       });
       const subscriber = session.current.subscribe(stream, null, finalOptions);
       subscriber.on('videoElementCreated', function (event) {
-        const stream = subscriber._.webRtcStream();
         const element = event.element;
         console.log(event.target);
         element.setAttribute('id', event.target.streamId);
-        setSubscriberElements((prevStreams) => [...prevStreams, element]);
+        // setSubscriberElements((prevStreams) => [...prevStreams, element]);
+        setSubscriberElements((prevStreams) => [...prevStreams, { element, subscriber }]);
         setVideoSources((prevStreams) => [...prevStreams, stream]);
       });
 

@@ -10,6 +10,7 @@ import { UserContext } from '../Context/user';
 // import { useLayoutManager } from '../Context/layout';
 
 function usePublisher(containerId, displayName = false) {
+  const [logLevel, setLogLevel] = useState(0);
   //  const layoutManager = useLayoutManager();
   const DFT_PUBLISHER_OPTIONS = {
     insertMode: 'append',
@@ -36,21 +37,34 @@ function usePublisher(containerId, displayName = false) {
     publisher.current = null;
   }
 
-  // function handleStreamCreated(e) {
-  //   console.log(e.target.id);
-  //   const stream = publisher.current._.webRtcStream();
-  //   console.log(stream);
-  //   setPubStream(stream);
-  //   console.log('started publishing');
-  //   setIsPublishing(true);
-  //   // insertWifiIcon(e.target.id, e.target.element);
-  //   setStream(e.stream);
-  // }
+  function handleStreamCreated(e) {
+    console.log('stream created event');
+    // const stream = publisher.current._.webRtcStream();
+    // console.log(stream);
+    // setPubStream(stream);
+    // console.log('started publishing');
+    // setIsPublishing(true);
+    // // insertWifiIcon(e.target.id, e.target.element);
+    // setStream(e.stream);
+  }
 
   function handleVideoElementCreated({ element }) {
     const stream = element.srcObject;
     setPubStream(stream);
     setIsPublishing(true);
+  }
+
+  function handleAudioLevel(e) {
+    const audioLevel = e.audioLevel;
+    let movingAvg = null;
+    if (movingAvg === null || movingAvg <= audioLevel) {
+      movingAvg = audioLevel;
+    } else {
+      movingAvg = 0.8 * movingAvg + 0.2 * audioLevel;
+    }
+    // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+    const currentLogLevel = Math.log(movingAvg) / Math.LN10 / 1.5 + 1;
+    setLogLevel(Math.min(Math.max(currentLogLevel, 0), 1) * 100);
   }
 
   function handleStreamDestroyed(e) {
@@ -62,6 +76,7 @@ function usePublisher(containerId, displayName = false) {
   }
 
   function handleAccessDenied() {
+    console.log('access Denied');
     if (publisher.current) publisher.current.destroy();
     publisher.current = null;
   }
@@ -135,7 +150,8 @@ function usePublisher(containerId, displayName = false) {
 
     publisher.on('destroyed', handleDestroyed);
     publisher.on('mediaStopped', handleMediaStopped);
-    // publisher.on('streamCreated', handleStreamCreated);
+    publisher.on('audioLevelUpdated', handleAudioLevel);
+    publisher.on('streamCreated', handleStreamCreated);
     publisher.on('streamDestroyed', handleStreamDestroyed);
     publisher.on('accessDenied', handleAccessDenied);
     publisher.on('videoDisabled', handleVideoDisabled);
@@ -143,6 +159,10 @@ function usePublisher(containerId, displayName = false) {
     publisher.on('videoElementCreated', handleVideoElementCreated);
     publisher.on('videoDisableWarning', handleVideoWarning);
     publisher.on('videoDisableWarningLifted', handleVideoWarningLifted);
+    publisher.on('audioInputDeviceChanged', (device) => {
+      console.log('audio device', device);
+      console.log(`changing device to: ${device.label}`);
+    });
 
     const { retry, error } = await new Promise((resolve, reject) => {
       mSession.session.publish(publisher, (err) => {
@@ -240,6 +260,7 @@ function usePublisher(containerId, displayName = false) {
     quality,
     layoutManager,
     pubStream,
+    logLevel,
   };
 }
 export default usePublisher;

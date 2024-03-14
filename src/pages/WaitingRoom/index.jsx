@@ -196,6 +196,7 @@ function WaitingRoom() {
 
   React.useEffect(() => {
     if (publisher && deviceInfo) {
+      console.log(deviceInfo);
       const currentVideoDevice = publisher.getVideoSource();
       const currentAudioDevice = publisher.getAudioSource();
       setAudioDevice(deviceInfo.audioInputDevices, currentAudioDevice);

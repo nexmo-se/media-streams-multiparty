@@ -8,7 +8,7 @@ import AudioSettings from '../../components/AudioSettings';
 import ChatSettings from '../../components/ChatSettings';
 import { SessionContext } from '../../Context/session';
 import usePublisher from '../../hooks/publisher';
-import useSubscriber from '../../hooks/subscriber';
+
 import { isMobile } from '../../util';
 import { UserContext } from '../../Context/user';
 import MuteVideoButton from '../../components/MuteVideoButton';
@@ -19,6 +19,7 @@ import BlurButton from '../../components/BlurButton';
 import ExitButton from '../../components/ExitButton';
 import CustomSubscriber from '../../components/CustomSubscriber';
 import CustomPublisher from '../../components/CustomPublisher';
+import CopyMeetingLink from '../../components/CopyMeetingLink';
 import { useParams } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -31,7 +32,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Room() {
   const { roomName } = useParams();
-  // const { processor, connector } = useMediaProcessor();
   // const [layoutManager, setLayoutManager] = useState(useLayoutManager());
   const { user } = useContext(UserContext);
   const wrapRef = useRef(null);
@@ -92,8 +92,18 @@ function Room() {
   }, [chatOpen]);
 
   useEffect(() => {
+    if (mPublisher.layoutManager) {
+      // setTimeout(function () {
+      mPublisher.layoutManager.layout();
+      // if (container) setLayoutContainer(initLayoutContainer(container));
+      // }, 100);
+    }
+  }, [mSession.subscribers.length]);
+
+  useEffect(() => {
     // if (container) setLayoutContainer(initLayoutContainer(container));
-    if (mPublisher.layoutManager)
+    if (mPublisher.layoutManager) {
+      console.log(mPublisher.layoutManager);
       window.onresize = () => {
         clearTimeout(resizeTimerRef.current);
 
@@ -102,6 +112,7 @@ function Room() {
           // if (container) setLayoutContainer(initLayoutContainer(container));
         }, 100);
       };
+    }
 
     return () => {
       clearTimeout(resizeTimerRef.current);
@@ -111,7 +122,7 @@ function Room() {
       // }
       // mSession.session.unpublish(mPublisher.publisher);
     };
-  }, [mSession]);
+  }, [mSession.subscribers.length]);
 
   useEffect(() => {
     if (mSession.connected && !mPublisher.publisher) {
@@ -135,19 +146,10 @@ function Room() {
     <Grid className="w-screen" container spacing={1}>
       <Grid ref={wrapRef} id="wrapper" height={'90vh'} item xs={chatOpen ? 9 : 12}>
         <div id="video-container" className="flex column w-full h-full">
-          {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream}></CustomPublisher>}
+          {mPublisher.pubStream && <CustomPublisher mediaStream={mPublisher.pubStream} audioLevel={mPublisher.logLevel}></CustomPublisher>}
           {mSession.subscriberElements.length > 0 &&
-            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} element={element}></CustomSubscriber>)}
-          {/* {mSession.session &&
-              mSession.streams.length > 0 &&
-              mSession.streams.map((stream) => (
-                <RemoteSubscriber key={stream.streamId} stream={stream} session={mSession.session}></RemoteSubscriber>
-              ))} */}
-          {/* <img
-              className="w-1/2"
-              src="https://www.airswift.com/hubfs/Imported_Blog_Media/woman-using-video-call-etiquette-1.jpg#keepProtocol"
-            />
-             */}
+            mSession.subscriberElements.map((element, index) => <CustomSubscriber key={index} subscriber={element}></CustomSubscriber>)}
+          {mSession.subscribers.length === 0 && <CopyMeetingLink></CopyMeetingLink>}
         </div>
       </Grid>
       {chatOpen && <Chat></Chat>}

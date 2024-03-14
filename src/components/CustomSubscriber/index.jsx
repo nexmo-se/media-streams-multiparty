@@ -1,9 +1,50 @@
-import React, { useEffect, useRef } from 'react';
-import PushPinIcon from '@mui/icons-material/PushPin';
-
-function CustomSubscriber({ element }) {
+import React, { useEffect, useContext, useRef, useState } from 'react';
+import { Mic, MicOff, Info } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import { UserContext } from '../../Context/user';
+function CustomSubscriber({ subscriber }) {
   const videoRef = useRef(null);
+  const { user } = useContext(UserContext);
+  const speakingThreshold = 1000;
+  const notSpeakingThreshold = 2000;
+  const element = subscriber.element;
+  const [isTalking, setIsTalking] = useState(false);
+  const [res, setRes] = React.useState(false);
+  const subs = subscriber.subscriber;
+  const audioStream = {
+    isTalking: false,
+    timestamp: 0,
+  };
   console.log(element);
+
+  function onAudioLevel(event) {
+    const now = new Date().getTime();
+    if (event && event.audioLevel > 0.2) {
+      // it could be speaking
+      if (!audioStream.isTalking) {
+        audioStream.isTalking = true;
+        audioStream.timestamp = new Date().getTime();
+      } else if (audioStream.isTalking && now - audioStream.timestamp > speakingThreshold) {
+        audioStream.isTalking = true;
+        audioStream.timestamp = new Date().getTime();
+        setIsTalking(true);
+        // this means that it's speaking for more than X seconds
+        // updateActiveSpeakerEl(elementId, "add");
+      }
+    } else if (audioStream.isTalking && now - audioStream.timestamp > notSpeakingThreshold) {
+      // low audio detected for X seconds
+      audioStream.isTalking = false;
+      setIsTalking(false);
+    }
+  }
+
+  subs.on('audioLevelUpdated', onAudioLevel);
+
+  const handleShowRes = () => {
+    setRes((prev) => !prev);
+  };
+
   const mediaStream = element.srcObject;
   useEffect(() => {
     if (mediaStream && videoRef.current) {
@@ -25,7 +66,34 @@ function CustomSubscriber({ element }) {
     }
   }, [element, mediaStream]);
 
-  return <video height="100%" width="100%" ref={videoRef} autoPlay playsInline muted></video>;
+  return (
+    <div className="absolute w-full m-auto">
+      {/* {subs.stream.hasAudio ? ( */}
+      <>
+        {subs.stream.hasAudio ? (
+          <Mic sx={{ position: 'absolute', left: '10px', top: '10px' }}></Mic>
+        ) : (
+          <MicOff sx={{ position: 'absolute', left: '10px', top: '10px' }}></MicOff>
+        )}
+
+        <Tooltip title={`Resolution: ${subs.videoWidth()}x${subs.videoHeight()}`}>
+          <IconButton onMouseOver={handleShowRes} sx={{ zIndex: '10', position: 'absolute', right: '10px', top: '10px' }}>
+            <Info />
+          </IconButton>
+        </Tooltip>
+        {/* {res && <div>Res: {`${subs.videoWidth()}x${subs.videoHeight()}`}</div>} */}
+      </>
+      <p className="absolute my-10 z-10 text-xs font-bold flex tracking-widest px-2">{user.username}</p>
+      <video
+        className={isTalking ? 'border-solid border-lime-400 border-2' : ''}
+        width="100%"
+        ref={videoRef}
+        autoPlay
+        playsInline
+        muted
+      ></video>
+    </div>
+  );
 }
 
 export default CustomSubscriber;
