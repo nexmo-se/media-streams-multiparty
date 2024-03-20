@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import OT from '@opentok/client';
+import OT from '@vonage/client-sdk-video';
 
 // console.log(OT)
 export default function useDevices() {

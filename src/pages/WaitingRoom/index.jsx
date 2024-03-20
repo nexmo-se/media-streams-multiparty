@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRef, useState, useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import OT from '@opentok/client';
+import OT from '@vonage/client-sdk-video';
 import { isMobile } from '../../util';
 const DFT_PUBLISHER_OPTIONS = {
   insertMode: 'append',

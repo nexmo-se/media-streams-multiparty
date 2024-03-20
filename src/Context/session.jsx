@@ -2,7 +2,7 @@
 import { useState, createContext, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import OT from '@opentok/client';
+import OT from '@vonage/client-sdk-video';
 
 import { getCredentials } from '../api/fetchCredentials';
 // import RoomAPI from 'api/room';
@@ -35,10 +35,10 @@ function SessionProvider({ children }) {
   const [creds, setCreds] = useState({});
 
   const credential = {
-    apiKey: '46264952',
+    appId: '7de8b215-d3f6-4404-b6ef-848345f9f195',
     token:
-      'T1==cGFydG5lcl9pZD00NjI2NDk1MiZzaWc9ZjFlNDg3ZTBjNzFlN2E1MGMxMjY4ZWFjNTllZTc2OGM1MGE2ZjYyNzpzZXNzaW9uX2lkPTJfTVg0ME5qSTJORGsxTW41LU1UY3dPVGMwTWpjd016WXpPWDVMTDJaNFJuRkdla3AxVXpaU1l6aGFZa0pRZERWMmNpdC1mbjQmY3JlYXRlX3RpbWU9MTcxMDQxNzQ5MSZub25jZT0wLjYwNzcxNDY2MDQ1OTAyMTMmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTcxMTAyMjI5MSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
-    sessionId: '2_MX40NjI2NDk1Mn5-MTcwOTc0MjcwMzYzOX5LL2Z4RnFGekp1UzZSYzhaYkJQdDV2cit-fn4',
+      'eyJhbGciOiJSUzI1NiJ9.eyJhcHBsaWNhdGlvbl9pZCI6IjdkZThiMjE1LWQzZjYtNDQwNC1iNmVmLTg0ODM0NWY5ZjE5NSIsImlhdCI6MTcxMDkzNDk0NywianRpIjoiN2RlOGIyMTUtZDNmNi00NDA0LWI2ZWYtODQ4MzQ1ZjlmMTk1Iiwic2NvcGUiOiJzZXNzaW9uLmNvbm5lY3QiLCJzZXNzaW9uX2lkIjoiMV9NWDQzWkdVNFlqSXhOUzFrTTJZMkxUUTBNRFF0WWpabFppMDRORGd6TkRWbU9XWXhPVFYtZmpFM01UQTVNelE1TkRjd016Wi1hMmhzUkVoM01tUkVkRTA1Y1RSaGFEWnFkRk5rZFcxVmZuNS0iLCJyb2xlIjoicHVibGlzaGVyIiwiaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdCI6IiJ9.SVTv0qVOoBUKc1KIHf-Q91qPfU2bidA_Y1sg5K6N-SKuw89TJk416kWbjb9XHqD8IBgIoq3SQ1wpnvC-2EI_5SMwKAe8S2l-cNwMrET8kCKazBgEG3lqTzMJzOqSnrK25V7A5FmB2ulMACLk4HjD3luJx1Cyjnx-QBBVyeLpqqDfOvdqGph63SQy6m8IIqFPfThGJDCXEVeLmPyQagKYqGcIp7oKM7MNvgEnNOPHGP92cKAZTFNyG1h2V5DWEeHZmREaftCyDeeKsuHaoIDpgK2F4ahhNA_buylpNqQxDeQbFgAaEhtcsMugoAPQ7pzrcBbvl4v8cRKDi2NAEro00Q',
+    sessionId: '1_MX43ZGU4YjIxNS1kM2Y2LTQ0MDQtYjZlZi04NDgzNDVmOWYxOTV-fjE3MTA5MzQ5NDcwMzZ-a2hsREh3MmREdE05cTRhaDZqdFNkdW1Vfn5-',
   };
 
   // useEffect(() => {
@@ -214,7 +214,7 @@ function SessionProvider({ children }) {
 
   async function connect(credential) {
     try {
-      session.current = OT.initSession(credential.apiKey, credential.sessionId);
+      session.current = OT.initSession(credential.appId, credential.sessionId);
       // let newSession = OT.initSession(credential.apiKey, credential.sessionId);
       // setSession(newSession);
       let newSession = session.current;
