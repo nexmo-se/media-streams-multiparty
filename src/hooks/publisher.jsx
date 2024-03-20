@@ -75,8 +75,10 @@ function usePublisher(containerId, displayName = false) {
     publisher.current = null;
   }
 
-  function handleAccessDenied() {
+  function handleAccessDenied(e) {
     console.log('access Denied');
+    console.log(e);
+    console.log(publisher.current);
     if (publisher.current) publisher.current.destroy();
     publisher.current = null;
   }

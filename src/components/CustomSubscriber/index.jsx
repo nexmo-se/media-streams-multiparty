@@ -3,8 +3,10 @@ import { Mic, MicOff, Info } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { UserContext } from '../../Context/user';
+import { SessionContext } from '../../Context/session';
 function CustomSubscriber({ subscriber }) {
   const videoRef = useRef(null);
+  const mSession = useContext(SessionContext);
   const { user } = useContext(UserContext);
   const speakingThreshold = 1000;
   const notSpeakingThreshold = 2000;
@@ -16,7 +18,14 @@ function CustomSubscriber({ subscriber }) {
     isTalking: false,
     timestamp: 0,
   };
-  console.log(element);
+
+  useEffect(() => {
+    if (subs && videoRef.current) {
+      subs.on('audioLevelUpdated', onAudioLevel);
+      const resize = mSession.createResizeObserver(subs);
+      resize.observe(document.getElementById(subs.stream.id));
+    }
+  }, [subs, videoRef.current]);
 
   function onAudioLevel(event) {
     const now = new Date().getTime();
@@ -38,8 +47,6 @@ function CustomSubscriber({ subscriber }) {
       setIsTalking(false);
     }
   }
-
-  subs.on('audioLevelUpdated', onAudioLevel);
 
   const handleShowRes = () => {
     setRes((prev) => !prev);
@@ -89,6 +96,7 @@ function CustomSubscriber({ subscriber }) {
         width="100%"
         ref={videoRef}
         autoPlay
+        id={subs.stream.id}
         playsInline
         muted
       ></video>

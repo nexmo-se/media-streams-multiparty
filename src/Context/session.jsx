@@ -287,6 +287,7 @@ function SessionProvider({ children }) {
         messages,
         videoSources,
         subscriberElements,
+        createResizeObserver,
       }}
     >
       {children}
