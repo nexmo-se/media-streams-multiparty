@@ -5,9 +5,7 @@ import { v4 as uuid } from 'uuid';
 import OT from '@opentok/client';
 
 import { getCredentials } from '../api/fetchCredentials';
-// import RoomAPI from 'api/room';
-// import CredentialAPI from 'api/credential';
-// import User from 'entities/user';
+
 const SINGAL_TYPE_CHAT = 'chat';
 
 import LayoutManager from '../utils/layout-manager';
@@ -24,8 +22,7 @@ function SessionProvider({ children }) {
   const [subscriberElements, setSubscriberElements] = useState([]);
 
   const session = useRef(null);
-  //   const navigate = useNavigate();
-  // const [session, setSession] = useState();
+
   const [messages, setMessages] = useState([{ from: 'App', text: 'You can use the chat to say something nice' }]);
   const { user } = useContext(UserContext);
   const [streams, setStreams] = useState([]);
@@ -40,15 +37,6 @@ function SessionProvider({ children }) {
       'T1==cGFydG5lcl9pZD00NjI2NDk1MiZzaWc9ZjFlNDg3ZTBjNzFlN2E1MGMxMjY4ZWFjNTllZTc2OGM1MGE2ZjYyNzpzZXNzaW9uX2lkPTJfTVg0ME5qSTJORGsxTW41LU1UY3dPVGMwTWpjd016WXpPWDVMTDJaNFJuRkdla3AxVXpaU1l6aGFZa0pRZERWMmNpdC1mbjQmY3JlYXRlX3RpbWU9MTcxMDQxNzQ5MSZub25jZT0wLjYwNzcxNDY2MDQ1OTAyMTMmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTcxMTAyMjI5MSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
     sessionId: '2_MX40NjI2NDk1Mn5-MTcwOTc0MjcwMzYzOX5LL2Z4RnFGekp1UzZSYzhaYkJQdDV2cit-fn4',
   };
-
-  // useEffect(() => {
-  //   getCredentials('room')
-  //     .then((creds) => {
-  //       console.log(creds);
-  //       setCreds(creds.data);
-  //     })
-  //     .catch((e) => console.log(e));
-  // }, []);
 
   useEffect(() => {
     try {
@@ -95,10 +83,6 @@ function SessionProvider({ children }) {
         width: rect.width,
         height: rect.height,
       });
-
-      // current width & height
-      // width.current = rect.width;
-      // height.current = rect.height;
     });
     return resizeObserver;
   };
@@ -149,23 +133,6 @@ function SessionProvider({ children }) {
     setReconnecting(false);
   }
 
-  function insertPinIcon(targetSubscriber) {
-    const childNodeStr = `<button 
-    id="speakerPin-${targetSubscriber.id}"
-    style="
-    position: absolute; 
-    top: 8px; 
-    right: 8px;
-    background: url('https://www.svgrepo.com/show/31706/map-pin.svg');
-    background-position: center;
-    background-size: contain;
-    height: 18px;
-    width: 18px;
-    background-repeat: no-repeat;">
-    </button>`;
-    targetSubscriber.insertAdjacentHTML('beforeend', childNodeStr);
-  }
-
   async function subscribe(stream, session, options = {}) {
     console.log('request to subscribe');
     if (session) {
@@ -196,17 +163,6 @@ function SessionProvider({ children }) {
         element.classList.add('OT_big');
       }
 
-      // insertPinIcon(element);
-      // const pinEl = document.getElementById(`speakerPin-${element.id}`);
-      // pinEl.addEventListener('click', function () {
-      //   if (element.classList.contains('OT_big')) {
-      //     element.classList.remove('OT_big');
-      //   } else {
-      //     element.classList.add('OT_big');
-      //   }
-      //   callLayout.layout();
-      // });
-
       addSubscribers({ subscriber });
       // setCallSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
     }
@@ -215,8 +171,7 @@ function SessionProvider({ children }) {
   async function connect(credential) {
     try {
       session.current = OT.initSession(credential.apiKey, credential.sessionId);
-      // let newSession = OT.initSession(credential.apiKey, credential.sessionId);
-      // setSession(newSession);
+
       let newSession = session.current;
 
       session.current.on('streamPropertyChanged', handleStreamPropertyChanged);
@@ -239,8 +194,7 @@ function SessionProvider({ children }) {
         });
       });
       const userData = JSON.parse(session.current.connection.data);
-      //   const newUser = new User(userData.name, userData.role, newSession.connection.id);
-      //   setUser(newUser);
+
       console.log('session: ', session.current);
     } catch (err) {
       console.log(err);
@@ -248,15 +202,6 @@ function SessionProvider({ children }) {
   }
 
   async function joinRoom(roomName, user) {
-    // getCredentials(roomName)
-    //   .then((creds) => {
-    //     console.log(creds.data);
-    //     connect(creds.data);
-    //   })
-    //   .catch((e) => console.log(e));
-    // setUser(user);
-    // const newRoom = await RoomAPI.createSession(roomName);
-    // const credential = await CredentialAPI.generateCredential({ sessionId: newRoom.sessionId, role: 'publisher', data: user });
     connect(credential);
   }
 
@@ -266,7 +211,6 @@ function SessionProvider({ children }) {
       setSession(null);
       setConnected(false);
     }
-    // navigate('/');
   }
 
   return (

@@ -4,9 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import OT from '@opentok/client';
 import OTStats from '../utils/stats';
-// import RoomAPI from 'api/room';
-// import CredentialAPI from 'api/credential';
-// import User from 'entities/user';
 
 export const SubscriberContext = createContext({});
 function SubscriberProvider({ children }) {

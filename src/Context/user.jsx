@@ -3,8 +3,7 @@ import { createContext, useState, useMemo } from 'react';
 export const UserContext = createContext();
 
 function UserProvider({ children }) {
-  var username = localStorage.getItem('username') || `User-${Date.now()}`;
-  // For EC-Render clients
+  const username = localStorage.getItem('username') || `User-${Date.now()}`;
 
   const [user, setUser] = useState({
     username,
@@ -21,14 +20,6 @@ function UserProvider({ children }) {
       audioFallbacks: 0,
     },
   });
-
-  // const value = useMemo(
-  //   () => ({
-  //     user,
-  //     setUser,
-  //   }),
-  //   [user]
-  // );
 
   return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 }

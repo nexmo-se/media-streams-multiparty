@@ -37,7 +37,7 @@ function Room() {
   const wrapRef = useRef(null);
   const resizeTimerRef = useRef();
   const mPublisher = usePublisher('video-container');
-  // const mSubscriber = useSubscriber();
+
   const mSession = useContext(SessionContext);
   const [chatOpen, setChatOpen] = useState(false);
 
@@ -49,30 +49,6 @@ function Room() {
     if (!mSession) return;
     mSession.session.disconnect();
   };
-
-  // useEffect(() => {
-  //   console.log('use effect run -toggle noise suppresion');
-  //   console.log(isNoiseSuppressionEnabled);
-  //   // if (OT.hasMediaProcessorSupport()) {
-  //   if (mPublisher.publisher) {
-  //     if (isNoiseSuppressionEnabled) {
-  //       console.log(mPublisher.publisher);
-  //       mPublisher.publisher
-  //         .setAudioMediaProcessorConnector(connector)
-  //         .catch(console.log)
-  //         .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
-  //     } else {
-  //       console.log('turning off NS');
-  //       mPublisher.publisher
-  //         .setAudioMediaProcessorConnector(null)
-  //         .catch(console.log)
-  //         .then(console.log('setAudioMediaProcessorConnector', isNoiseSuppressionEnabled));
-  //     }
-  //   } else {
-  //     console.log('dping nothing');
-  //     console.log(mPublisher);
-  //   }
-  // }, [mPublisher.isPublishing, isNoiseSuppressionEnabled, mPublisher.publisher]);
 
   useEffect(() => {
     const container = document.getElementById('wrapper');
@@ -93,10 +69,7 @@ function Room() {
 
   useEffect(() => {
     if (mPublisher.layoutManager) {
-      // setTimeout(function () {
       mPublisher.layoutManager.layout();
-      // if (container) setLayoutContainer(initLayoutContainer(container));
-      // }, 100);
     }
   }, [mSession.subscribers.length]);
 
@@ -117,10 +90,6 @@ function Room() {
     return () => {
       clearTimeout(resizeTimerRef.current);
       resizeTimerRef.current = null;
-      // if (mSession.session) {
-      //   mSession.session.disconnect();
-      // }
-      // mSession.session.unpublish(mPublisher.publisher);
     };
   }, [mSession.subscribers.length]);
 
@@ -158,13 +127,7 @@ function Room() {
         <MuteAudioButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteAudioButton>
         <MuteVideoButton publisher={mPublisher.publisher} publishing={mPublisher.isPublishing}></MuteVideoButton>
 
-        {/* {OT.hasMediaProcessorSupport() && (
-            <NoiseButton handleNoiseChange={handleNoiseChange} isNoiseSuppressionEnabled={isNoiseSuppressionEnabled}></NoiseButton>
-          )} */}
-
         {OT.hasMediaProcessorSupport() && !isMobile() && <BlurButton publisher={mPublisher.publisher}></BlurButton>}
-        {/* {!isMobile() && <MoreButton subStats={mSubscriber.aggregateStats} stats={mPublisher.getStats} />} */}
-        {/* <CaptionsSettings handleClick={() => setCaptionsEnabled((prev) => !prev)} /> */}
         {!isMobile() && <ChatSettings handleClick={() => setChatOpen((prev) => !prev)} />}
         <ExitButton handleLeave={handleLeave}></ExitButton>
       </div>
