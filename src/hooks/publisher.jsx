@@ -1,7 +1,7 @@
 // @flow
 import { useState, useEffect, useContext, useRef, useCallback } from 'react';
 import LayoutManager from '../utils/layout-manager';
-import OT from '@opentok/client';
+// import OT from '@opentok/client';
 
 import { SessionContext } from '../Context/session';
 import { getInitials } from '../util';

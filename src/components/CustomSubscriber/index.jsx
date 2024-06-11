@@ -18,6 +18,11 @@ function CustomSubscriber({ subscriber }) {
     isTalking: false,
     timestamp: 0,
   };
+  // let mediaStream
+  subs.on('mediaStreamAvailable', (event) => {
+    console.warn('mediaStreamAvailable')
+    console.warn(event)
+  })
 
   useEffect(() => {
     if (subs && videoRef.current) {
@@ -51,7 +56,7 @@ function CustomSubscriber({ subscriber }) {
   const handleShowRes = () => {
     setRes((prev) => !prev);
   };
-
+  
   const mediaStream = element.srcObject;
   useEffect(() => {
     if (mediaStream && videoRef.current) {

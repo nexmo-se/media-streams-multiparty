@@ -2,7 +2,7 @@
 import { useState, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import OT from '@opentok/client';
+// import OT from '@opentok/client';
 import OTStats from '../utils/stats';
 
 export const SubscriberContext = createContext({});
