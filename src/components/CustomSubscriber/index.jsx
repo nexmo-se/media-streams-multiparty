@@ -19,6 +19,8 @@ function CustomSubscriber({ subscriber }) {
     timestamp: 0,
   };
   // let mediaStream
+  // 'we're prusmably not seeing this because it's being attached to the subscriber too late? 
+  console.warn(subs)
   subs.on('mediaStreamAvailable', (event) => {
     console.warn('mediaStreamAvailable')
     console.warn(event)
