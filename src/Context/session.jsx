@@ -2,7 +2,7 @@
 import { useState, createContext, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import OT from '@opentok/client';
+// import OT from '@opentok/client';
 
 import { getCredentials } from '../api/fetchCredentials';
 
@@ -32,11 +32,15 @@ function SessionProvider({ children }) {
   const [creds, setCreds] = useState({});
 
   const credential = {
-    apiKey: '46264952',
-    token:
-      'T1==cGFydG5lcl9pZD00NjI2NDk1MiZzaWc9ZjFlNDg3ZTBjNzFlN2E1MGMxMjY4ZWFjNTllZTc2OGM1MGE2ZjYyNzpzZXNzaW9uX2lkPTJfTVg0ME5qSTJORGsxTW41LU1UY3dPVGMwTWpjd016WXpPWDVMTDJaNFJuRkdla3AxVXpaU1l6aGFZa0pRZERWMmNpdC1mbjQmY3JlYXRlX3RpbWU9MTcxMDQxNzQ5MSZub25jZT0wLjYwNzcxNDY2MDQ1OTAyMTMmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTcxMTAyMjI5MSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
-    sessionId: '2_MX40NjI2NDk1Mn5-MTcwOTc0MjcwMzYzOX5LL2Z4RnFGekp1UzZSYzhaYkJQdDV2cit-fn4',
+    apiKey: '47918861',
+    token: 'T1==cGFydG5lcl9pZD00NzkxODg2MSZzaWc9N2Q3N2Q1ZTVkNjg2YWI0MjgxYjY0ODQ4NmViOTU5OTZkOGE5MjM0NTpzZXNzaW9uX2lkPTJfTVg0ME56a3hPRGcyTVg1LU1UY3hPREEzTXpVMU5qQTRPWDVTVFVGTldqbFVlbVV6TmtoVE5qUnBNMGd6YTNWc1duRi1mbjQmY3JlYXRlX3RpbWU9MTcxODA3MzY0MSZub25jZT0wLjIxMzY1MDc2ODk3MzgxNjMmcm9sZT1tb2RlcmF0b3ImZXhwaXJlX3RpbWU9MTcyMDY2NTY0MSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==',
+    sessionId: '2_MX40NzkxODg2MX5-MTcxODA3MzU1NjA4OX5STUFNWjlUemUzNkhTNjRpM0gza3VsWnF-fn4', 
   };
+  // const credential = {
+  //   apiKey: '',
+  //   token: '',
+  //   sessionId: '', 
+  // };
 
   useEffect(() => {
     try {
